@@ -10,14 +10,15 @@
     <b>API para gerenciar despesas</b>
 </p>
 
-<h2 id="technologies">💻 Tecnologias</h2>
+<h2 id="tech">💻 Tecnologias</h2>
 
 - Java 21
 - Spring Boot
 - PostgreSQL
 
 <h2 id="started">🚀 Como rodar o projeto</h2>
-- Clone ess repositório ou baixe o .zip na sua máquina
+
+- Clone esse repositório ou baixe o .zip na sua máquina
 - Abra o projeto na sua IDE preferida
 - Instale as dependências utilizando Maven
 - Rode o projeto
@@ -42,11 +43,17 @@ git clone url-do-github
 ​
 | rota | descrição 
 |----------------------|-----------------------------------------------------
+
 | <kbd>POST /users/register </kbd>     | registra um usuário veja em [detalhes](#post-register-detail)
+
 | <kbd>POST /users/login </kbd>     | faz o login do usuário veja em [detalhes](#post-login-detail)
+
 | <kbd>GET /expenses </kbd>     | lista as despesas opcional filtro por data veja em [detalhes](#get-expenses-detail)
+
 | <kbd>POST /expenses </kbd>     | cria uma nova despesa veja em [detalhes](#post-expenses-detail)
+
 | <kbd>PUT /expenses/{id} </kbd>     | atualiza os dados de uma despesa veja em [detalhes](#put-expenses-detail)
+
 | <kbd>DELETE /expenses/{id} </kbd>     | remove uma despesa veja em [detahles](#delete-expenses-detail)
 
 <h3 id="post-register-detail">POST /users/register</h3>
@@ -87,7 +94,9 @@ git clone url-do-github
 ```
 
 <h3 id="get-expenses-detail">GET /expenses</h3>
+
 - Opcional Query Param startDate e endDate
+
 - Exemplo: GET /expenses?startDate=2025-09-01&endDate=2025-09-30
 
 **RESPONSE**
