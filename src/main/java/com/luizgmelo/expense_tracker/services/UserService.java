@@ -1,21 +1,29 @@
 package com.luizgmelo.expense_tracker.services;
 
+import com.luizgmelo.expense_tracker.dto.LoginDto;
 import com.luizgmelo.expense_tracker.dto.RegisterDto;
+import com.luizgmelo.expense_tracker.dto.TokenDto;
 import com.luizgmelo.expense_tracker.dto.UserDto;
+import com.luizgmelo.expense_tracker.exceptions.InvalidCredentialsException;
 import com.luizgmelo.expense_tracker.models.User;
 import com.luizgmelo.expense_tracker.repositories.UserRepository;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public UserDto register(RegisterDto registerDto) {
@@ -28,5 +36,15 @@ public class UserService {
 
         User userSaved = userRepository.save(user);
         return new UserDto(userSaved.getId(), userSaved.getName(), user.getEmail());
+    }
+
+    public TokenDto login(LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.email());
+
+        if (user == null || !passwordEncoder.matches(loginDto.password(), user.getPassword())) {
+            throw new InvalidCredentialsException("Credenciais inválidas");
+        }
+
+        return new TokenDto(tokenService.generateToken(user));
     }
 }
