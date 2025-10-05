@@ -3,15 +3,11 @@ package com.luizgmelo.expense_tracker.services;
 import com.luizgmelo.expense_tracker.dto.LoginDto;
 import com.luizgmelo.expense_tracker.dto.RegisterDto;
 import com.luizgmelo.expense_tracker.dto.TokenDto;
-import com.luizgmelo.expense_tracker.dto.UserDto;
 import com.luizgmelo.expense_tracker.exceptions.InvalidCredentialsException;
 import com.luizgmelo.expense_tracker.models.User;
 import com.luizgmelo.expense_tracker.repositories.UserRepository;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -26,16 +22,19 @@ public class UserService {
         this.tokenService = tokenService;
     }
 
-    public UserDto register(RegisterDto registerDto) {
+    public void register(RegisterDto registerDto) {
         String passwordHashed = passwordEncoder.encode(registerDto.password());
+
+        if (userRepository.findByEmail(registerDto.email()) != null) {
+            return;
+        }
 
         User user = new User();
         user.setName(registerDto.name());
         user.setEmail(registerDto.email());
         user.setPassword(passwordHashed);
 
-        User userSaved = userRepository.save(user);
-        return new UserDto(userSaved.getId(), userSaved.getName(), user.getEmail());
+        userRepository.save(user);
     }
 
     public TokenDto login(LoginDto loginDto) {
