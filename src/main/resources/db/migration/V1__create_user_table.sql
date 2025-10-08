@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS tb_user() {
-    id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS tb_user(
+    id UUID PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password TEXT NOT NULL
-}
+)
