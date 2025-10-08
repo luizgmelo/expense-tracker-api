@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS tb_expense(
+    id UUID PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    amount DOUBLE PRECISION NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    date DATE DEFAULT CURRENT_DATE
+)
