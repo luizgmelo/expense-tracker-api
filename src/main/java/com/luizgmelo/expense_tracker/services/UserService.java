@@ -4,6 +4,7 @@ import com.luizgmelo.expense_tracker.dto.LoginDto;
 import com.luizgmelo.expense_tracker.dto.RegisterDto;
 import com.luizgmelo.expense_tracker.dto.TokenDto;
 import com.luizgmelo.expense_tracker.exceptions.InvalidCredentialsException;
+import com.luizgmelo.expense_tracker.exceptions.UserNotFoundException;
 import com.luizgmelo.expense_tracker.models.User;
 import com.luizgmelo.expense_tracker.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,14 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
+    }
+
+    public User findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return user;
     }
 
     public void register(RegisterDto registerDto) {
