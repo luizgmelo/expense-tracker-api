@@ -3,7 +3,6 @@ package com.luizgmelo.expense_tracker.controllers;
 import com.luizgmelo.expense_tracker.dto.LoginDto;
 import com.luizgmelo.expense_tracker.dto.RegisterDto;
 import com.luizgmelo.expense_tracker.dto.TokenDto;
-import com.luizgmelo.expense_tracker.dto.UserDto;
 import com.luizgmelo.expense_tracker.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
