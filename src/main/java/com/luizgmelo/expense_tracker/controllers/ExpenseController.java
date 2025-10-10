@@ -3,14 +3,14 @@ package com.luizgmelo.expense_tracker.controllers;
 import com.luizgmelo.expense_tracker.dto.ExpenseDto;
 import com.luizgmelo.expense_tracker.dto.ExpenseResponseDto;
 import com.luizgmelo.expense_tracker.services.ExpenseService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/expenses")
@@ -20,6 +20,13 @@ public class ExpenseController {
 
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ExpenseDto>> listExpenses(Pageable pageable,
+                                                         @RequestParam(required = false) LocalDate startDate,
+                                                         @RequestParam(required = false) LocalDate endDate) {
+        return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenses(pageable, startDate, endDate));
     }
 
     @PostMapping

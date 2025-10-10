@@ -5,7 +5,11 @@ import com.luizgmelo.expense_tracker.dto.ExpenseResponseDto;
 import com.luizgmelo.expense_tracker.models.Expense;
 import com.luizgmelo.expense_tracker.models.User;
 import com.luizgmelo.expense_tracker.repositories.ExpenseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class ExpenseService {
@@ -16,6 +20,16 @@ public class ExpenseService {
     public ExpenseService(ExpenseRepository expenseRepository, UserService userService) {
         this.expenseRepository = expenseRepository;
         this.userService = userService;
+    }
+
+    public Page<ExpenseDto> getExpenses(Pageable pageable, LocalDate startDate, LocalDate endDate) {
+        Page<Expense> expensePage;
+        if (startDate != null && endDate != null) {
+            expensePage = expenseRepository.findByDateBetween(pageable, startDate, endDate);
+        } else {
+            expensePage = expenseRepository.findAll(pageable);
+        }
+        return expensePage.map(ExpenseDto::fromExpense);
     }
 
     public ExpenseResponseDto registerExpense(ExpenseDto expenseDto, String email) {
