@@ -1,6 +1,7 @@
 package com.luizgmelo.expense_tracker.controllers;
 
 import com.luizgmelo.expense_tracker.dto.ExpenseDto;
+import com.luizgmelo.expense_tracker.dto.ExpenseRequestDto;
 import com.luizgmelo.expense_tracker.dto.ExpenseResponseDto;
 import com.luizgmelo.expense_tracker.services.ExpenseService;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,11 @@ public class ExpenseController {
     @PostMapping
     public ResponseEntity<ExpenseResponseDto> createExpense(@RequestBody ExpenseDto expenseDto, Principal user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(expenseService.registerExpense(expenseDto, user.getName()));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ExpenseResponseDto> updateExpense(@PathVariable UUID id, @RequestBody ExpenseRequestDto expenseRequestDto, Principal user) {
+        return ResponseEntity.status(HttpStatus.OK).body(expenseService.updateExpense(id, expenseRequestDto, user.getName()));
     }
 
     @DeleteMapping("{id}")

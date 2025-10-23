@@ -1,10 +1,13 @@
 package com.luizgmelo.expense_tracker.services;
 
 import com.luizgmelo.expense_tracker.dto.ExpenseDto;
+import com.luizgmelo.expense_tracker.dto.ExpenseRequestDto;
 import com.luizgmelo.expense_tracker.dto.ExpenseResponseDto;
+import com.luizgmelo.expense_tracker.exceptions.ExpenseNotFoundException;
 import com.luizgmelo.expense_tracker.models.Expense;
 import com.luizgmelo.expense_tracker.models.User;
 import com.luizgmelo.expense_tracker.repositories.ExpenseRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,6 +50,18 @@ public class ExpenseService {
 
         return new ExpenseResponseDto(newExpense.getId(), newExpense.getDescription(), newExpense.getCategory(),
                 newExpense.getAmount(), newExpense.getDate(), user.getId());
+    }
+
+    public ExpenseResponseDto updateExpense(UUID id, ExpenseRequestDto expenseUpdateDto, String email) {
+        User user =  userService.findUserByEmail(email);
+        Expense expense = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
+
+        BeanUtils.copyProperties(expenseUpdateDto, expense);
+
+        expenseRepository.save(expense);
+
+        return new ExpenseResponseDto(expense.getId(), expense.getDescription(), expense.getCategory(),
+                expense.getAmount(), expense.getDate(), user.getId());
     }
 
     public void deleteExpense(UUID id) {
