@@ -26,12 +26,15 @@ public class ExpenseService {
         this.userService = userService;
     }
 
-    public Page<ExpenseDto> getExpenses(Pageable pageable, LocalDate startDate, LocalDate endDate) {
+    public Page<ExpenseDto> getExpenses(Pageable pageable, LocalDate startDate, LocalDate endDate, String email) {
+
+        User user = userService.findUserByEmail(email);
+
         Page<Expense> expensePage;
         if (startDate != null && endDate != null) {
-            expensePage = expenseRepository.findByDateBetween(pageable, startDate, endDate);
+            expensePage = expenseRepository.findByUserAndDateBetween(pageable, startDate, endDate, user);
         } else {
-            expensePage = expenseRepository.findAll(pageable);
+            expensePage = expenseRepository.findAllByUser(pageable, user);
         }
         return expensePage.map(ExpenseDto::fromExpense);
     }
@@ -45,6 +48,7 @@ public class ExpenseService {
         expense.setCategory(expenseDto.category());
         expense.setAmount(expenseDto.amount());
         expense.setDate(expenseDto.date());
+        expense.setUser(user);
 
         Expense newExpense = expenseRepository.save(expense);
 
@@ -54,7 +58,7 @@ public class ExpenseService {
 
     public ExpenseResponseDto updateExpense(UUID id, ExpenseRequestDto expenseUpdateDto, String email) {
         User user =  userService.findUserByEmail(email);
-        Expense expense = expenseRepository.findById(id).orElseThrow(ExpenseNotFoundException::new);
+        Expense expense = expenseRepository.findByIdAndUser(id, user).orElseThrow(ExpenseNotFoundException::new);
 
         BeanUtils.copyProperties(expenseUpdateDto, expense);
 
@@ -64,7 +68,9 @@ public class ExpenseService {
                 expense.getAmount(), expense.getDate(), user.getId());
     }
 
-    public void deleteExpense(UUID id) {
+    public void deleteExpense(UUID id, String email) {
+        User user =  userService.findUserByEmail(email);
+        expenseRepository.findByIdAndUser(id, user).orElseThrow(ExpenseNotFoundException::new);
         expenseRepository.deleteById(id);
     }
 }

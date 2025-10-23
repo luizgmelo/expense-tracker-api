@@ -26,9 +26,10 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<Page<ExpenseDto>> listExpenses(Pageable pageable,
+                                                         Principal principal,
                                                          @RequestParam(required = false) LocalDate startDate,
                                                          @RequestParam(required = false) LocalDate endDate) {
-        return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenses(pageable, startDate, endDate));
+        return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenses(pageable, startDate, endDate, principal.getName()));
     }
 
     @PostMapping
@@ -42,8 +43,8 @@ public class ExpenseController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteExpense(@PathVariable UUID id) {
-        expenseService.deleteExpense(id);
+    public ResponseEntity<Void> deleteExpense(@PathVariable UUID id, Principal principal) {
+        expenseService.deleteExpense(id, principal.getName());
         return ResponseEntity.noContent().build();
     }
 }
