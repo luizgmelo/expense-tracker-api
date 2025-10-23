@@ -54,7 +54,7 @@ git clone url-do-github
 
 | <kbd>PUT /expenses/{id} </kbd>     | atualiza os dados de uma despesa veja em [detalhes](#put-expenses-detail)
 
-| <kbd>DELETE /expenses/{id} </kbd>     | remove uma despesa veja em [detahles](#delete-expenses-detail)
+| <kbd>DELETE /expenses/{id} </kbd>     | remove uma despesa veja em [datalhes](#delete-expenses-detail)
 
 <h3 id="post-register-detail">POST /users/register</h3>
 
@@ -169,3 +169,5 @@ git clone url-do-github
 
 <h3 id="delete-expenses-detail">DELETE /expenses/{id}</h3>
 StatusCode: 204 No Content
+
+Expense Tracker Desafio URL: https://roadmap.sh/projects/expense-tracker-api
