@@ -3,5 +3,10 @@ CREATE TABLE IF NOT EXISTS tb_expense(
     description VARCHAR(255) NOT NULL,
     amount DOUBLE PRECISION NOT NULL,
     category VARCHAR(100) NOT NULL,
-    date DATE DEFAULT CURRENT_DATE
+    date DATE DEFAULT CURRENT_DATE,
+    user_id UUID NOT NULL,
+    CONSTRAINT fk_user
+        FOREIGN KEY(user_id)
+        REFERENCES tb_user(id)
+        ON DELETE CASCADE
 )
