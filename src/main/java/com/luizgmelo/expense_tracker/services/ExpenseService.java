@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class ExpenseService {
@@ -46,5 +47,9 @@ public class ExpenseService {
 
         return new ExpenseResponseDto(newExpense.getId(), newExpense.getDescription(), newExpense.getCategory(),
                 newExpense.getAmount(), newExpense.getDate(), user.getId());
+    }
+
+    public void deleteExpense(UUID id) {
+        expenseRepository.deleteById(id);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/expenses")
@@ -34,5 +35,9 @@ public class ExpenseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(expenseService.registerExpense(expenseDto, user.getName()));
     }
 
-
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable UUID id) {
+        expenseService.deleteExpense(id);
+        return ResponseEntity.noContent().build();
+    }
 }
