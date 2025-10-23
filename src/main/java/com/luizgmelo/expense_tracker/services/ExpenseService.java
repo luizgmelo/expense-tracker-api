@@ -70,7 +70,7 @@ public class ExpenseService {
 
     public void deleteExpense(UUID id, String email) {
         User user =  userService.findUserByEmail(email);
-        expenseRepository.findByIdAndUser(id, user).orElseThrow(ExpenseNotFoundException::new);
-        expenseRepository.deleteById(id);
+        Expense expense = expenseRepository.findByIdAndUser(id, user).orElseThrow(ExpenseNotFoundException::new);
+        expenseRepository.delete(expense);
     }
 }
