@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/revenues")
@@ -20,8 +21,6 @@ public class RevenueController {
     public RevenueController(RevenueService revenueService) {
         this.revenueService = revenueService;
     }
-
-    // TODO listRevenues
     // TODO deleteRevenue
     // TODO updateRevenue
 
@@ -33,6 +32,11 @@ public class RevenueController {
     @PostMapping
     public ResponseEntity<RevenueResponseDto> registerRevenue(@RequestBody RevenueRequestDto revenueRequestDto, Principal principal) {
         return ResponseEntity.status(HttpStatus.OK).body(revenueService.registerRevenue(revenueRequestDto, principal.getName()));
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteRevenue(@PathVariable UUID id, Principal principal) {
+        revenueService.deleteRevenue(id, principal.getName());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
