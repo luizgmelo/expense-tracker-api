@@ -30,8 +30,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(ExpenseNotFoundException.class)
-    public ResponseEntity<String> handleExpenseNotFoundException(ExpenseNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    @ExceptionHandler({ExpenseNotFoundException.class, RevenueNotFoundException.class})
+    public ResponseEntity<Map<String, String>> handleExpenseNotFoundException(Exception exception) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }
