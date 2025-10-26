@@ -21,7 +21,6 @@ public class RevenueController {
     public RevenueController(RevenueService revenueService) {
         this.revenueService = revenueService;
     }
-    // TODO deleteRevenue
     // TODO updateRevenue
 
     @GetMapping
@@ -31,12 +30,18 @@ public class RevenueController {
 
     @PostMapping
     public ResponseEntity<RevenueResponseDto> registerRevenue(@RequestBody RevenueRequestDto revenueRequestDto, Principal principal) {
-        return ResponseEntity.status(HttpStatus.OK).body(revenueService.registerRevenue(revenueRequestDto, principal.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(revenueService.registerRevenue(revenueRequestDto, principal.getName()));
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<RevenueResponseDto> updateRevenue(@PathVariable UUID id, @RequestBody RevenueRequestDto revenueRequestDto, Principal principal) {
+        return ResponseEntity.status(HttpStatus.OK).body(revenueService.updateRevenue(id, revenueRequestDto, principal.getName()));
+    }
+
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteRevenue(@PathVariable UUID id, Principal principal) {
         revenueService.deleteRevenue(id, principal.getName());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }

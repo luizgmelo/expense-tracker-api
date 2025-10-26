@@ -49,6 +49,20 @@ public class RevenueService {
                 revenue.getAmount(), revenue.getDate(), user.getId());
     }
 
+    public RevenueResponseDto updateRevenue(UUID idRevenue, RevenueRequestDto revenueRequestDto, String email) {
+
+        User user = userService.findUserByEmail(email);
+        Revenue revenue = revenueRepository.findByIdAndUser(idRevenue, user).orElseThrow(RevenueNotFoundException::new);
+
+        BeanUtils.copyProperties(revenueRequestDto, revenue);
+
+        revenueRepository.save(revenue);
+
+        return new RevenueResponseDto(revenue.getId(), revenue.getDescription(),
+                revenue.getAmount(), revenue.getDate(), user.getId());
+    }
+
+
     public void deleteRevenue(UUID id, String email) {
         User user = userService.findUserByEmail(email);
         Revenue revenue = revenueRepository.findByIdAndUser(id, user).orElseThrow(RevenueNotFoundException::new);
